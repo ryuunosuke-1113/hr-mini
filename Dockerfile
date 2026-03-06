@@ -13,12 +13,9 @@ RUN npm run build
 # ---- PHP deps (Composer) ----
 FROM composer:2 AS composerbuild
 WORKDIR /app
-COPY src/composer.json src/composer.lock ./
-RUN composer install --no-dev --prefer-dist --no-interaction --no-progress
 
 COPY src/ ./
-# artisanや最適化系は起動時にやる（ENVが必要なため）
-
+RUN composer install --no-dev --prefer-dist --no-interaction --no-progress
 
 # ---- Runtime (nginx + php-fpm) ----
 FROM php:8.3-fpm-alpine
